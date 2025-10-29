@@ -1,0 +1,32 @@
+[
+    {
+        "nome": "Derick",
+        "email": "email@email.com",
+        "hash_senha": "$2b$12$C/QEkwTDa38gQ7TYZjM7tOq8dM9nzaE/xfa7oztHkCIF3yK/VAHg."
+    },
+    {
+        "nome": "thaissa",
+        "email": "email@email.com",
+        "hash_senha": "$2b$12$zSuf9c.t4bXwFvtHsC/pg.NI.ItThvXdwGP8vQlRkV01zXbn6Nil."
+    },
+    {
+        "nome": "Elvira Carvalho",
+        "email": "elvira@email.com",
+        "hash_senha": "$2b$12$KCJJgXSvsHMHfMSa6cFmde6CPQ4Tfhhgc7w2IVqhVF/ADJhhuPJjC"
+    },
+    {
+        "nome": "Dereg",
+        "email": "Derege@gmail.com",
+        "hash_senha": "$2b$12$aW58ahSRHGEUmsLvYJoTBOEm2x7sqzPQbwrVRUQW8ntS9GaVCh/wW"
+    },
+    {
+        "nome": "Derick Maschio",
+        "email": "derickmaschio15@gmail.com",
+        "hash_senha": "$2b$12$fo21JVp.vdeFoAtfI/i97Oys.pI8tlpNESESd6/xGfNgPAcMoFvaq"
+    },
+    {
+        "nome": "Derick",
+        "email": "derickmaschio02@gmail.com",
+        "hash_senha": "$2b$12$kQd1IsptJcUBTHniwjPBle3EQDH5mtdgp/XNXiw5OgGCWxfk1r0Oy"
+    }
+]
