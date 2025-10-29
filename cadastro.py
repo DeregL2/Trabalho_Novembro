@@ -1,69 +1,54 @@
-# Importa bibliotecas
 import re
 import bcrypt
-import json
-
-# Arquivo para salvar usuários
-ARQUIVO_USUARIOS = "usuarios.json"
-
-# Função para salvar usuário em arquivo
-def salvar_usuario(dados_usuario):
-    try:
-        with open(ARQUIVO_USUARIOS, "r") as f:
-            usuarios = json.load(f)
-    except FileNotFoundError:
-        usuarios = []
-
-    usuarios.append(dados_usuario)
-    with open(ARQUIVO_USUARIOS, "w") as f:
-        json.dump(usuarios, f, indent=4)
+from database import session, Usuario
 
 def cadastrar():
-    # Cadastro de usuário
+    """
+    Função para cadastrar novos usuários no banco de dados.
+    Valida e-mail, senha e confirmação de senha.
+    """
     while True:
         nome = input("Digite seu nome: ")
         email = input("Digite seu e-mail: ")
         senha = input("Digite sua senha: ")
         confirmacao_senha = input("Confirme sua senha: ")
 
+        # --- Validações ---
         padrao_email = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         padrao_senha = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%&*!?]).{8,}$'
 
-        # Validação de e-mail
         if not re.fullmatch(padrao_email, email):
             print("E-mail inválido!")
-            continue  # volta para o início do loop
-
-        # Validação de senha
-        if not re.fullmatch(padrao_senha, senha):
-            print("Senha inválida! Ela deve ter pelo menos 8 caracteres, uma maiúscula, uma minúscula, um número e um caractere especial (@#$%&*!?).")
             continue
 
-        # Confirmação de senha
+        if not re.fullmatch(padrao_senha, senha):
+            print("Senha inválida! Deve ter pelo menos 8 caracteres, uma maiúscula, uma minúscula, um número e um caractere especial.")
+            continue
+
         if senha != confirmacao_senha:
             print("Senhas divergentes, tente novamente.")
             continue
 
-        # Termos de Uso
-        aceita = input("Você aceita os termos da política de privacidade? (s/n): ").lower()
+        aceita = input("Você aceita a política de privacidade? (s/n): ").lower()
         if aceita != 's':
-            print("Você precisa aceitar a política de privacidade para se cadastrar.")
+            print("É necessário aceitar a política de privacidade para se cadastrar.")
             continue
 
-        # Gerar hash da senha (apenas depois de todas as validações)
-        senha_bytes = senha.encode("utf-8")
-        hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
+        # --- Hash da senha ---
+        hash_senha = bcrypt.hashpw(senha.encode("utf-8"), bcrypt.gensalt())
 
-        # Criar dicionário do usuário
-        usuario = {
-            "nome": nome,
-            "email": email,
-            "hash_senha": hash_senha.decode("utf-8")  # salva como string
-        }
+        # --- Criação do usuário ---
+        novo_usuario = Usuario(
+            nome=nome,
+            email=email.lower(),
+            hash_senha=hash_senha.decode("utf-8")
+        )
 
-        # Salvar usuário no arquivo
-        salvar_usuario(usuario)
-
-        print("Cadastro concluído com sucesso! ✅")
-        break
-
+        try:
+            session.add(novo_usuario)
+            session.commit()
+            print("Cadastro concluído com sucesso!")
+            break
+        except Exception as e:
+            session.rollback()
+            print("Erro ao cadastrar usuário. E-mail já cadastrado?" if "Duplicate" in str(e) else str(e))

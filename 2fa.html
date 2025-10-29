@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2FA - Sistema</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Autenticação 2FA</h2>
+    <form method="post">
+        <label for="codigo">Código enviado por e-mail</label>
+        <input type="text" id="codigo" name="codigo" required>
+        <button type="submit">Validar</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p style="color:red;">{{ messages[0] }}</p>
+        {% endif %}
+    {% endwith %}
+</div>
+</body>
+</html>

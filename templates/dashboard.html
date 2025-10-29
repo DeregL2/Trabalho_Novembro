@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Área Restrita</h2>
+        <!-- Exibe o nome do usuário que está logado -->
+        <p>Bem-vindo, {{ usuario_nome }}</p>
+
+        <form method="GET" action="{{ url_for('index') }}">
+            <button type="submit">Sair</button>
+        </form>
+    </div>
+</body>
+</html>
