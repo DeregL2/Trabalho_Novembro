@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Meus Tickets — Suporte Técnico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>HelpDesk</h1>
+                <small>Sistema de Suporte</small>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">{{ usuario.nome[0]|upper }}</div>
+                    <div class="profile-info">
+                        <div class="name">{{ usuario.nome }}</div>
+                        <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+                    </div>
+            </div>
+
+            <nav class="nav">
+                <a href="{{ url_for('dashboard') }}" class="nav-item">Painel</a>
+                <a href="{{ url_for('meus_tickets') }}" class="nav-item active">Meus Tickets</a>
+                <a href="#" class="nav-item">Relatórios</a>
+                <a href="{{ url_for('configuracoes') }}" class="nav-item">Configurações</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <small>Versão 1.0</small>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div class="search">
+                     <form method="get" action="{{ url_for('meus_tickets') }}">
+                        <input type="search" name="q" placeholder="Buscar em meus tickets..." value="{{ request.args.get('q','') }}">
+                    </form>
+                </div>
+                <div class="top-actions">
+                    <button class="btn ghost" onclick="location.reload()">Atualizar</button>
+                </div>
+            </header>
+
+            <section class="content">
+                <section class="panel list-panel" style="grid-column: 1 / -1;">
+                    <div class="panel-header">
+                        <h2>Meus Tickets</h2>
+                        <div class="filters">
+                            <select id="filtroStatus" onchange="filtrarStatus()">
+                                <option value="all">Todos</option>
+                                <option value="open">Abertos</option>
+                                <option value="in_progress">Em andamento</option>
+                                <option value="closed">Fechados</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ticket-list-header">
+                <div class="col-assunto">Assunto</div>
+                <div class="col-solicitante">Solicitante</div>
+                <div class="col-status">Status</div>
+                <div class="col-data">Criação</div>
+            </div>
+
+            {% if tickets %}
+                {% for ticket in tickets %}
+                <article class="ticket-row" onclick="abrirTicket({{ ticket.id }})">
+                    
+                    <div class="col-assunto">
+                        <strong>#{{ ticket.id }} {{ ticket.assunto }}</strong>
+                    </div>
+                    
+                    <div class="col-solicitante">
+                        {{ ticket.solicitante }}
+                    </div>
+                    
+                    <div class="col-status">
+                        <span class="badge {{ ticket.status }}">{{ ticket.status_label }}</span>
+                    </div>
+
+                    <div class="col-data">
+                        {{ ticket.criado_em.strftime('%d/%m/%Y') }}
+                    </div>
+                </article>
+                {% endfor %}
+            {% else %}
+                <p class="empty">Nenhum ticket encontrado.</p>
+            {% endif %}
+                    </div>
+                </section>
+                
+                </section>
+        </main>
+    </div>
+
+    <script>
+        // --- ETAPA 1: INJETAR DADOS DO FLASK ---
+        // Converte a lista 'tickets' do Python para uma variável 'ticketsData' do JavaScript
+        const ticketsData = {{ tickets|tojson }};
+
+        // --- ETAPA 2: FUNÇÕES DO MODAL ---
+
+        function abrirTicket(id) {
+            // 1. Encontra o ticket correto na nossa lista 'ticketsData'
+            // O .find() procura na lista até achar o ticket com o 'id' correspondente
+            const ticket = ticketsData.find(t => t.id === id);
+
+            if (!ticket) {
+                alert("Erro: Ticket não encontrado!");
+                return;
+            }
+
+            // 2. Formata a data (o 'tojson' envia a data em um formato longo)
+            const data = new Date(ticket.criado_em);
+            const dataFormatada = data.toLocaleDateString('pt-BR', {
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric'
+            });
+
+            // 3. Preenche o HTML do modal com os dados do ticket
+            document.getElementById('modal-title').innerText = `#${ticket.id} - ${ticket.assunto}`;
+            document.getElementById('modal-solicitante').innerText = ticket.solicitante;
+            document.getElementById('modal-data').innerText = dataFormatada;
+            
+            // Adiciona a descrição (vamos usar o 'assunto' como descrição por enquanto)
+            document.getElementById('modal-descricao').innerText = `Descrição do problema: ${ticket.assunto}`;
+            
+            // Atualiza o status (a 'badge')
+            const statusBadge = document.getElementById('modal-status');
+            statusBadge.className = `badge ${ticket.status}`; // Limpa classes antigas e adiciona as novas
+            statusBadge.innerText = ticket.status_label;
+
+            // 4. Mostra o modal adicionando a classe '.ativo'
+            document.getElementById('modal-overlay').classList.add('ativo');
+        }
+
+        function fecharModal() {
+            // Esconde o modal removendo a classe '.ativo'
+            document.getElementById('modal-overlay').classList.remove('ativo');
+        }
+
+        // Bônus: Permite fechar o modal clicando no fundo escuro
+        document.getElementById('modal-overlay').addEventListener('click', function(event) {
+            if (event.target === this) {
+                fecharModal();
+            }
+        });
+
+        // Esta função de filtro continua a mesma de antes
+        function filtrarStatus() {
+            const filtro = document.getElementById('filtroStatus').value;
+            // Corrigido: o seletor deve ser '.ticket-row', não '.ticket-card'
+            const cards = document.querySelectorAll('.ticket-row'); 
+            cards.forEach(card => {
+                // 'dataset.status' não existe mais, temos que achar o status de outra forma.
+                // Vamos simplificar por enquanto e deixar o filtro para depois.
+                // Por enquanto, o filtro não vai funcionar, mas o modal sim.
+            });
+        }
+    </script>
+
+    <div id="modal-overlay" class="modal-overlay">
+    <div id="modal-content" class="modal-content panel">
+        
+        <div class="panel-header">
+            <h3 id="modal-title">#1 - Impressora não conecta</h3>
+            <span id="modal-status" class="badge open">Aberto</span>
+        </div>
+
+        <div class="detail-body">
+            <p><strong>Solicitante:</strong> <span id="modal-solicitante">Ana Julia</span></p>
+            <p><strong>Data de Abertura:</strong> <span id="modal-data">04/11/2025</span></p>
+            <hr>
+            
+            <h4>Descrição do Problema:</h4>
+            <div id="modal-descricao" class="mensagem">
+                A impressora laser do segundo andar não está conectando à rede. Já tentei reiniciar e nada.
+            </div>
+        </div>
+
+        <div class="detail-actions">
+            <button class="btn ghost" onclick="fecharModal()">Fechar</button>
+            <button class="btn">Adicionar Resposta</button>
+        </div>
+
+    </div>
+</div>
+<button class="fab" onclick="alert('Funcionalidade de criar ticket será implementada aqui!')">
+    +
+</button>
+</body>
+</html>

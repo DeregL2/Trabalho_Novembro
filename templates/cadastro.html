@@ -3,43 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - Sistema</title>
+    <title>Cadastro - Sistema de Suporte</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <div class="container">
-        <h2>Cadastro</h2>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Crie sua conta</h2>
+            <p class="subtitle">Junte-se ao sistema de suporte técnico</p>
 
-        <!-- Exibe mensagens de erro/sucesso -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <p class="mensagem">{{ messages[0] }}</p>
-            {% endif %}
-        {% endwith %}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">{{ messages[0] }}</div>
+                {% endif %}
+            {% endwith %}
 
-        <!-- Formulário de cadastro -->
-        <form method="POST" action="/cadastro">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+            <form method="POST" action="/cadastro">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
 
-            <label for="email">E-mail</label>
-            <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
 
-            <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Crie uma senha forte" required>
 
-            <label for="confirmacao">Confirme a senha</label>
-            <input type="password" id="confirmacao" name="confirmacao" placeholder="Confirme sua senha" required>
+                <label for="confirmacao">Confirme a senha</label>
+                <input type="password" id="confirmacao" name="confirmacao" placeholder="Confirme sua senha" required>
 
-            <div class="termos">
-                <input type="checkbox" id="termos" name="termos" required>
-                <label for="termos">Aceito a Política de Privacidade</label>
-            </div>
+                <!-- NOVO BOX DE TERMOS -->
+                <div class="termos-box">
+                    <h3>Política de Privacidade e Termos de Uso</h3>
+                    <div class="termos-conteudo">
+                        <p><strong>1. Coleta de Dados:</strong> Coletamos apenas as informações essenciais para criação e manutenção da sua conta, como nome, e-mail e senha. Essas informações são usadas exclusivamente para fins de autenticação e comunicação.</p>
 
-            <button type="submit">Cadastrar</button>
-        </form>
+                        <p><strong>2. Uso das Informações:</strong> Seus dados são utilizados apenas para acesso ao sistema, contato sobre suporte técnico e melhorias na experiência do usuário. Não compartilhamos seus dados com terceiros sem sua autorização.</p>
 
-        <p>Já tem conta? <a href="{{ url_for('index') }}">Faça login</a></p>
+                        <p><strong>3. Segurança:</strong> Todas as senhas são armazenadas de forma criptografada e seguimos boas práticas de segurança para proteger seus dados contra acessos não autorizados.</p>
+
+                        <p><strong>4. Direitos do Usuário:</strong> Você pode solicitar a exclusão ou atualização de suas informações a qualquer momento, entrando em contato com nossa equipe de suporte.</p>
+
+                        <p><strong>5. Consentimento:</strong> Ao marcar a opção abaixo e se cadastrar, você confirma que leu, entendeu e concorda com os termos desta Política de Privacidade.</p>
+
+                        <p><em>Última atualização: Novembro de 2025.</em></p>
+                    </div>
+
+                    <div class="termos">
+                        <input type="checkbox" id="termos" name="termos" required>
+                        <label for="termos">Li e aceito os Termos de Uso e Política de Privacidade</label>
+                    </div>
+                </div>
+
+                <button type="submit">Cadastrar</button>
+            </form>
+
+            <p class="switch-form">Já possui conta?
+                <a href="/">Faça login</a>
+            </p>
+        </div>
     </div>
 </body>
 </html>

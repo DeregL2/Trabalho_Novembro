@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Configurações — Suporte Técnico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>HelpDesk</h1>
+                <small>Sistema de Suporte</small>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">{{ usuario.nome[0]|upper }}</div>
+                <div class="profile-info">
+                    <div class="name">{{ usuario.nome }}</div>
+                    <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <a href="{{ url_for('dashboard') }}" class="nav-item">Painel</a>
+                <a href="{{ url_for('meus_tickets') }}" class="nav-item">Meus Tickets</a>
+                <a href="#" class="nav-item">Relatórios</a>
+                <a href="{{ url_for('configuracoes') }}" class="nav-item active">Configurações</a>
+            </nav>
+            <div class="sidebar-footer">
+                <small>Versão 1.0</small>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div class="search">
+                    </div>
+                <div class="top-actions">
+                    <button class="btn ghost" onclick="location.href='{{ url_for('dashboard') }}'">Voltar ao Painel</button>
+                </div>
+            </header>
+
+            <section class="content">
+                
+                <div class="config-2fa panel">
+                  <div class="panel-header">
+                    <h3>Autenticação de Duas Etapas (2FA)</h3>
+                  </div>
+                  <div class="config-2fa-body">
+                    <p>
+                      Status: 
+                      {% if usuario.twofa_ativo %}
+                        <strong class="status-ativo">Ativado</strong>
+                      {% else %}
+                        <strong class="status-inativo">Desativado</strong>
+                      {% endif %}
+                    </p>
+                    <form method="post" action="{{ url_for('ativar_2fa') }}">
+                      <label class="switch">
+                        <input 
+                          type="checkbox" 
+                          name="toggle_2fa"
+                          {% if usuario.twofa_ativo %}checked{% endif %}
+                          onchange="this.form.submit()">
+                        <span class="slider"></span>
+                      </label>
+                    </form>
+                  </div>
+                </div>
+                
+                </section>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,69 +1,542 @@
-/* Define a fonte e fundo da página */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+/* ===============================
+   ESTILO GERAL
+================================= */
+* { box-sizing: border-box; }
+body, h1, h2, h3, p, ul { margin: 0; padding: 0; }
+
+/* ========= LOGIN & CADASTRO ========= */
+.auth-body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    background: linear-gradient(135deg, #004aad, #007bff);
 }
 
-/* Container centralizado para formulários */
-.container {
-    background-color: #fff;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 300px;
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.auth-card {
+    background: white;
+    padding: 40px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
-h2 {
-    margin-bottom: 20px;
+.auth-card h2 {
+    color: #003366;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
 }
 
 label {
     display: block;
     text-align: left;
-    margin-top: 10px;
+    margin-top: 15px;
+    color: #333;
+    font-weight: 600;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 6px;
     border: 1px solid #ccc;
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
 }
 
 button {
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 25px;
     width: 100%;
-    border: none;
     background-color: #007bff;
     color: #fff;
-    border-radius: 5px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
-p {
-    margin-top: 15px;
+.switch-form {
+    margin-top: 20px;
+    font-size: 0.9rem;
 }
 
-.termos {
+.switch-form a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.switch-form a:hover {
+    text-decoration: underline;
+}
+
+/* ======== ALERTAS ======== */
+.alert {
+    background-color: #ffeeba;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+/* ======== BOX DE TERMOS DE USO ======== */
+.termos-box {
+    text-align: left;
+    margin-top: 20px;
+}
+.termos-box h3 {
+    font-size: 1rem;
+    color: #003366;
+    margin-bottom: 10px;
+}
+.termos-conteudo {
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 15px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.4;
+}
+.termos-conteudo::-webkit-scrollbar {
+    width: 8px;
+}
+.termos-conteudo::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 4px;
+}
+
+/* =====================================
+   DASHBOARD — NOVO VISUAL
+===================================== */
+
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+    height: 100vh;
+}
+
+/* Layout principal */
+.app { display: flex; height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    background: #0f1724;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+.brand h1 { font-size: 20px; letter-spacing: 0.5px; margin-bottom: 4px; }
+.brand small { color: #a0aec0; }
+
+.profile {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 18px 0;
+}
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: #1f2937;
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+}
+.profile-info .name { font-weight: 600; }
+.logout { display: inline-block; margin-top: 4px; color: #cbd5e1; font-size: 13px; text-decoration: none; }
+
+/* Navegação */
+.nav { display:flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.nav-item {
+    color: #cbd5e1;
+    padding: 8px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+.nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+.nav-item.active { background: #1f2b38; color: #fff; }
+
+/* Footer */
+.sidebar-footer { margin-top: auto; color: #94a3b8; font-size: 12px; }
+
+/* Main */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.termos input {
-    margin-right: 5px;
+/* Topbar */
+.topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid #e6e9ee;
+    background: #fff;
+}
+.search input[type="search"] {
+    width: 420px;
+    max-width: calc(100vw - 400px);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+}
+.top-actions { display:flex; gap: 10px; align-items: center; }
+.btn {
+    background: #0b63d6;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn.ghost {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #111827;
+}
+
+/* Conteúdo */
+.content {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 18px;
+    padding: 20px;
+    align-items: start;
+}
+
+/* Painéis */
+.panel {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(16,24,40,0.04);
+    padding: 14px;
+}
+.list-panel .panel-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+.list { max-height: calc(100vh - 200px); overflow:auto; padding-right: 6px; }
+
+/* Ticket card */
+.ticket-card {
+    display:flex;
+    justify-content:space-between;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #f0f2f5;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.ticket-card:hover { background: #f8fafc; border-color: #e6eefb; }
+.ticket-left { max-width: 70%; }
+.ticket-id { font-weight: 700; color: #0b63d6; margin-bottom:6px; }
+.ticket-subject { font-size: 15px; margin-bottom:6px; font-weight:600; }
+.ticket-meta { color: #64748b; font-size: 13px; }
+
+/* Badge de status */
+.badge {
+    display:inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight:600;
+    text-transform: capitalize;
+}
+.badge.open { background:#def3ff; color:#0369a1; }
+.badge.in_progress { background:#fff4e6; color:#92400e; }
+.badge.closed { background:#ecfccb; color:#365314; }
+
+/* Detalhe do ticket */
+.detail-panel { min-height: 320px; }
+.panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.detail-body { color: #111827; font-size: 14px; }
+.mensagem { background:#f8fafc; padding:12px; border-radius:6px; margin-top:8px; border:1px solid #e6eefb; }
+.detail-actions { display:flex; gap:10px; margin-top:14px; }
+
+/* Estados vazios */
+.empty, .empty-detail { color:#64748b; padding: 30px; text-align:center; }
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .app { flex-direction: column; }
+    .sidebar { width: 100%; flex-direction: row; gap: 12px; align-items:center; padding: 10px; }
+    .profile { display:none; }
+    .content { grid-template-columns: 1fr; padding: 12px; }
+    .detail-panel { order: 2; }
+    .list-panel { order: 1; }
+    .search input[type="search"] { width: 80%; }
+}
+
+/* =====================================
+   CONFIGURAÇÃO 2FA (INTERRUPTOR)
+===================================== */
+.config-2fa {
+    /* Isso faz ele parecer com os outros painéis */
+    grid-column: 1 / -1; /* Ocupa a largura toda */
+    margin-top: 18px;
+}
+
+.config-2fa-body {
+    display: flex;
+    justify-content: space-between; /* Coloca o texto de um lado, interruptor do outro */
+    align-items: center;
+    padding: 10px;
+}
+
+.config-2fa-body p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.status-ativo {
+    color: #28a745; /* Verde */
+    font-weight: 700;
+}
+.status-inativo {
+    color: #dc3545; /* Vermelho */
+    font-weight: 700;
+}
+
+/* O 'container' do interruptor */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Esconde o checkbox feio original */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* O fundo do interruptor (a 'barra' cinza/azul) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* Cor quando desligado */
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+/* A 'bolinha' que desliza */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+/* Muda a cor de fundo quando o checkbox está 'checked' (ligado) */
+input:checked + .slider {
+    background-color: #007bff; /* Seu azul principal */
+}
+
+/* Move a 'bolinha' para a direita quando está 'checked' (ligado) */
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* =====================================
+   LISTA DE TICKETS (Estilo Desk Manager)
+===================================== */
+
+/* O cabeçalho da lista (Assunto, Solicitante, etc.) */
+.ticket-list-header {
+    display: flex;
+    padding: 10px 12px;
+    border-bottom: 2px solid #e6e9ee;
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Uma linha individual da lista */
+.ticket-row {
+    display: flex;
+    padding: 16px 12px;
+    border-bottom: 1px solid #f0f2f5;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.ticket-row:hover {
+    background-color: #f8fafc; /* Um leve destaque ao passar o mouse */
+}
+
+/*
+ * Definição das colunas 
+ * Vamos usar 'flex' para dar tamanhos diferentes a elas
+*/
+
+.col-assunto {
+    flex: 3; /* Faz a coluna de assunto ser a maior */
+    min-width: 0; /* Evita que o texto vaze */
+    padding-right: 15px;
+    font-weight: 600;
+}
+.col-assunto strong {
+    color: #0b63d6; /* Azul do ID do ticket */
+}
+
+.col-solicitante {
+    flex: 2; /* Tamanho médio */
+    padding-right: 15px;
+}
+
+.col-status {
+    flex: 1; /* Tamanho pequeno */
+    text-align: center;
+}
+
+.col-data {
+    flex: 1; /* Tamanho pequeno */
+    text-align: right; /* Alinha a data à direita */
+    color: #64748b;
+}
+
+/* =====================================
+   MODAL (POP-UP) DE TICKET
+===================================== */
+
+/* A camada escura de fundo, que cobre a tela inteira */
+.modal-overlay {
+    position: fixed; /* Fica fixo na tela, mesmo com scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo preto semi-transparente */
+    display: flex; /* Usa flexbox para centralizar o conteúdo */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Garante que fique na frente de tudo */
+    
+    /* Começa escondido por padrão */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+/* A caixa branca do modal (o conteúdo) */
+.modal-content {
+    width: 90%;
+    max-width: 600px; /* Define uma largura máxima */
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px; /* Reutiliza a classe 'panel' que já temos */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9); /* Efeito de zoom leve */
+    transition: transform 0.3s;
+}
+
+/*
+ * ESTADOS DE EXIBIÇÃO
+ * Nós vamos criar uma classe '.ativo' no overlay para mostrar o modal
+*/
+
+/* Quando o overlay estiver ativo, ele aparece */
+.modal-overlay.ativo {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Quando o overlay estiver ativo, o conteúdo aparece com zoom */
+.modal-overlay.ativo .modal-content {
+    transform: scale(1);
+}
+
+/* =====================================
+   FAB (Floating Action Button)
+===================================== */
+.fab {
+    position: fixed; /* Fica fixo na tela */
+    bottom: 30px;    /* 30px de distância do fundo */
+    right: 30px;     /* 30px de distância da direita */
+    
+    width: 60px;     /* Largura do botão */
+    height: 60px;    /* Altura do botão */
+    
+    background-color: #007bff; /* Seu azul principal */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Deixa o botão perfeitamente redondo */
+    
+    font-size: 28px;   /* Tamanho do ícone '+' */
+    font-weight: 300;  /* Deixa o '+' um pouco mais fino */
+    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    cursor: pointer;
+    
+    /* Centraliza o '+' dentro do círculo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    transition: all 0.3s ease;
+    z-index: 900; /* Garante que fique acima da lista, mas abaixo do modal */
+}
+
+/* Efeito ao passar o mouse */
+.fab:hover {
+    background-color: #0056b3; /* Seu azul mais escuro (o mesmo do :hover dos botões) */
+    transform: scale(1.05); /* Leve aumento de tamanho */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Remove o 'margin-top' que a regra 'button' geral estava aplicando */
+.fab {
+    margin-top: 0;
 }

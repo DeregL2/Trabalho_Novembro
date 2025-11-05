@@ -1,20 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sistema</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard — Suporte Técnico</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h2>Área Restrita</h2>
-        <!-- Exibe o nome do usuário que está logado -->
-        <p>Bem-vindo, {{ usuario_nome }}</p>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>HelpDesk</h1>
+                <small>Sistema de Suporte</small>
+            </div>
 
-        <form method="GET" action="{{ url_for('index') }}">
-            <button type="submit">Sair</button>
-        </form>
+            <div class="profile">
+                <div class="avatar">{{ usuario.nome[0]|upper }}</div>
+                    <div class="profile-info">
+                        <div class="name">{{ usuario.nome }}</div>
+                        <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+                    </div>
+            </div>
+
+            <nav class="nav">
+                <a href="{{ url_for('dashboard') }}" class="nav-item active">Painel</a>
+                <a href="{{ url_for('meus_tickets') }}" class="nav-item">Meus Tickets</a>
+                <a href="#" class="nav-item">Relatórios</a>
+                <a href="{{ url_for('configuracoes') }}" class="nav-item">Configurações</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <small>Versão 1.0</small>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div class="search">
+                    <form method="get" action="{{ url_for('dashboard') }}">
+                        <input type="search" name="q" placeholder="Buscar tickets, usuários ou ID" value="{{ request.args.get('q','') }}">
+                    </form>
+                </div>
+
+                <div class="top-actions">
+                    <button class="btn ghost" onclick="location.reload()">Atualizar</button>
+                </div>
+            </header>
+
+            <section class="content">
+                
+                <section class="panel list-panel">
+                    <div class="panel-header">
+                        <h2>Atividade Recente</h2>
+                        </div>
+
+                    <div class="list">
+                        {% if tickets %}
+                            {% else %}
+                            <p class="empty">Nenhuma atividade recente encontrada.</p>
+                        {% endif %}
+                    </div>
+                </section>
+
+                <aside class="panel detail-panel" id="detailPanel">
+                    <div class="empty-detail">
+                        <p>Bem-vindo ao Painel!</p>
+                        <p>Use o menu à esquerda para navegar.</p>
+                    </div>
+                </aside>
+            </section>
+        </main>
     </div>
-</body>
+
+    </body>
 </html>
