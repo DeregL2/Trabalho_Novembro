@@ -540,3 +540,38 @@ input:checked + .slider:before {
 .fab {
     margin-top: 0;
 }
+
+/* =====================================
+   ZONA DE PERIGO (Excluir Conta)
+===================================== */
+.danger-zone {
+    grid-column: 1 / -1; /* Ocupa a largura toda */
+    margin-top: 18px;
+    border: 1px solid #dc3545; /* Borda vermelha sutil */
+}
+
+.danger-zone .panel-header h3 {
+    color: #dc3545; /* Título vermelho */
+}
+
+.danger-zone-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.danger-zone-body p {
+    font-size: 0.9rem;
+    color: #6c757d; /* Cinza escuro para a descrição */
+    margin-top: 4px;
+}
+
+/* Estilo para o botão de perigo */
+.btn-danger {
+    background-color: #dc3545; /* Fundo vermelho */
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #c82333; /* Vermelho mais escuro no hover */
+}

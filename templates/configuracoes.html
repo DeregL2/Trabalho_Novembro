@@ -28,6 +28,7 @@
                 <a href="#" class="nav-item">Relatórios</a>
                 <a href="{{ url_for('configuracoes') }}" class="nav-item active">Configurações</a>
             </nav>
+
             <div class="sidebar-footer">
                 <small>Versão 1.0</small>
             </div>
@@ -43,7 +44,16 @@
             </header>
 
             <section class="content">
-                
+
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert" style="grid-column: 1 / -1; margin-bottom: 15px;">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <div class="config-2fa panel">
                   <div class="panel-header">
                     <h3>Autenticação de Duas Etapas (2FA)</h3>
@@ -70,8 +80,68 @@
                   </div>
                 </div>
                 
-                </section>
+                <div class="panel delete-account-panel">
+                    <div class="panel-header">
+                        <h3>Excluir Conta</h3>
+                    </div>
+                    <div class="delete-account-body">
+                        <div>
+                            <strong>Excluir esta conta permanentemente</strong>
+                            <p>Uma vez excluída, sua conta não poderá ser recuperada.</p>
+                        </div>
+                        
+                        <button class="btn btn-danger" onclick="abrirModalExclusao()">
+                            Excluir Minha Conta
+                        </button>
+                    </div>
+                </div>
+                
+            </section>
         </main>
     </div>
+
+    <div id="delete-modal-overlay" class="modal-overlay">
+        <div id="delete-modal-content" class="modal-content panel">
+            
+            <div class="panel-header">
+                <h3 style="color: #dc3545;">Confirmar Exclusão</h3>
+            </div>
+
+            <div class="detail-body">
+                <p><strong>Isso é permanente.</strong> Tem certeza que deseja excluir sua conta?</p>
+                <p>Para confirmar, digite sua senha:</p>
+                
+                <form action="{{ url_for('excluir_conta') }}" method="POST" style="margin-top: 15px;">
+                    <label for="senha_confirmacao">Senha</label>
+                    <input type="password" id="senha_confirmacao" name="senha_confirmacao" required>
+                
+                    <div class="detail-actions" style="margin-top: 20px;">
+                        <button type="button" class="btn ghost" onclick="fecharModalExclusao()">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Sim, excluir minha conta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function abrirModalExclusao() {
+            // Mostra o modal de exclusão adicionando a classe '.ativo'
+            document.getElementById('delete-modal-overlay').classList.add('ativo');
+        }
+
+        function fecharModalExclusao() {
+            // Esconde o modal de exclusão removendo a classe '.ativo'
+            document.getElementById('delete-modal-overlay').classList.remove('ativo');
+        }
+
+        // Bônus: Permite fechar o modal clicando no fundo escuro
+        document.getElementById('delete-modal-overlay').addEventListener('click', function(event) {
+            if (event.target === this) {
+                fecharModalExclusao();
+            }
+        });
+    </script>
+
 </body>
 </html>

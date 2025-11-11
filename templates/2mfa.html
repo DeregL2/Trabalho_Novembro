@@ -6,19 +6,32 @@
 <title>2FA - Sistema</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-<div class="container">
-    <h2>Autenticação 2FA</h2>
-    <form method="post">
-        <label for="codigo">Código enviado por e-mail</label>
-        <input type="text" id="codigo" name="codigo" required>
-        <button type="submit">Validar</button>
-    </form>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <p style="color:red;">{{ messages[0] }}</p>
-        {% endif %}
-    {% endwith %}
+<body class="auth-body">
+
+<div class="auth-container">
+    <div class="auth-card">
+        
+        <h2>Autenticação 2FA</h2>
+        <p class="subtitle">Insira o código enviado para seu e-mail.</p>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="post">
+            <label for="codigo">Código de 6 dígitos</label>
+            <input type="text" id="codigo" name="codigo" placeholder="000000" required>
+            <button type="submit">Validar</button>
+        </form>
+
+        <p class="switch-form">
+            <a href="{{ url_for('login') }}">Voltar para o login</a>
+        </p>
+    </div>
 </div>
 </body>
 </html>

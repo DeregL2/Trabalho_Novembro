@@ -22,6 +22,11 @@ LIMITE_FALHAS = 5 # NOVO: define o limite de tentativas
 app = Flask(__name__)
 app.secret_key = "segredo_super_seguro"  # 🔒 usada para proteger sessões
 
+# --- NOVO: EXPIRAÇÃO DE SESSÃO ---
+# Define que a sessão expira após 30 minutos de inatividade.
+app.permanent_session_lifetime = timedelta(minutes=1)
+# --- FIM DA NOVA LINHA ---
+
 # ==========================
 # 📬 CONFIGURAÇÃO DO E-MAIL (2FA)
 # ==========================
@@ -196,6 +201,8 @@ def login():
 
         # Se 2FA desativado → login direto
         session["usuario_id"] = usuario.id
+        # --- NOVO: MARCA A SESSÃO PARA EXPIRAR ---
+        session.permanent = True
         return redirect(url_for("dashboard"))
 
     return render_template("login.html")
@@ -230,6 +237,8 @@ def mfa():
             session["usuario_id"] = usuario.id
             del session["email_temp"]
             del codigos_2fa[email_temp]
+            # --- NOVO: MARCA A SESSÃO PARA EXPIRAR ---
+            session.permanent = True
             return redirect(url_for("dashboard"))
 
         flash("Código incorreto.", "erro")
@@ -344,6 +353,45 @@ def ativar_2fa():
     # Redireciona de volta para a página de configurações.
     return redirect(url_for("configuracoes"))
 
+
+# ---------------- EXCLUIR CONTA -----------------
+@app.route("/excluir_conta", methods=["POST"])
+def excluir_conta():
+    """
+    Exclui permanentemente a conta do usuário do banco de dados.
+    Requer confirmação de senha.
+    """
+    # 1. Verifica se o usuário está logado
+    if "usuario_id" not in session:
+        return redirect(url_for("login"))
+
+    # 2. Pega a senha digitada no modal
+    senha_confirmacao = request.form["senha_confirmacao"]
+    usuario_id = session["usuario_id"]
+    
+    usuario = db_session.query(Usuario).filter_by(id=usuario_id).first()
+
+    # 3. Verifica se a senha está correta
+    if not usuario or not bcrypt.checkpw(senha_confirmacao.encode('utf-8'), usuario.hash_senha.encode('utf-8')):
+        # Se a senha estiver errada, avisa e manda de volta para as configurações
+        flash("Senha incorreta. A conta não foi excluída.", "erro")
+        return redirect(url_for("configuracoes"))
+
+    # 4. Se a senha estiver correta, exclui o usuário
+    try:
+        db_session.delete(usuario)
+        db_session.commit()
+        
+        # 5. Limpa a sessão (logout) e manda para a página de login
+        session.clear()
+        flash("Sua conta foi excluída permanentemente.", "sucesso")
+        return redirect(url_for("login"))
+        
+    except Exception as e:
+        db_session.rollback()
+        print(f"Erro ao excluir usuário: {e}")
+        flash("Ocorreu um erro ao tentar excluir sua conta. Tente novamente.", "erro")
+        return redirect(url_for("configuracoes"))
 
 # ---------------- LOGOUT -----------------
 @app.route("/logout")
